@@ -1,5 +1,7 @@
 package com.example.backend.domain.entity.customer;
 
+import com.example.backend.converter.customer.CustomerStatusConverter;
+import com.example.backend.converter.customer.CustomerTypeConverter;
 import com.example.backend.domain.enums.customer.CustomerStatus;
 import com.example.backend.domain.enums.customer.CustomerType;
 import jakarta.persistence.*;
@@ -19,8 +21,12 @@ public class Customer {
     @Column(name = "customer_name", nullable = false, length = 150)
     private String customerName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "customer_type", nullable = false)
+    @Convert(converter = CustomerTypeConverter.class)
+    @Column(
+        name = "customer_type",
+        columnDefinition = "ENUM('Individual','SME','Enterprise')",
+        nullable = false
+    )
     private CustomerType customerType;
 
     @Column(name = "phone_number", length = 20)
@@ -38,9 +44,13 @@ public class Customer {
     @Column(name = "country", length = 50)
     private String country;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private CustomerStatus status = CustomerStatus.Active;
+    @Convert(converter = CustomerStatusConverter.class)
+    @Column(
+        name = "status",
+        columnDefinition = "ENUM('Active','In_Collections','Closed')"
+    )
+    private CustomerStatus status;
+
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

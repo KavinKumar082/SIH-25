@@ -1,5 +1,6 @@
     package com.example.backend.domain.entity.sop;
 
+import com.example.backend.converter.sop.SopCollectionStageConverter;
 import com.example.backend.domain.enums.sop.CollectionStage;
 import jakarta.persistence.*;
 
@@ -20,9 +21,13 @@ public class SopActionSlaMap {
     @JoinColumn(name = "action_sla_id")
     private ActionSlaRule actionSlaRule;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "collection_stage")
+    @Convert(converter = SopCollectionStageConverter.class)
+    @Column(
+        name = "collection_stage",
+        columnDefinition = "ENUM('Pre_DCA','Active','Legal')"
+    )
     private CollectionStage collectionStage;
+
 
     // Getters & Setters
     public Long getMapId() { return mapId; }

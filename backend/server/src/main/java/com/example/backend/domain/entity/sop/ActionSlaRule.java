@@ -1,5 +1,6 @@
 package com.example.backend.domain.entity.sop;
 
+import com.example.backend.converter.sop.ActionTypeConverter;
 import com.example.backend.domain.enums.sop.ActionType;
 import jakarta.persistence.*;
 
@@ -12,9 +13,12 @@ public class ActionSlaRule {
     @Column(name = "action_sla_id", nullable = false, updatable = false)
     private Long actionSlaId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "action_type")
+    @Convert(converter = ActionTypeConverter.class)
+    @Column(name = "action_type",
+    columnDefinition = "ENUM('Call','Visit','Email')"
+    )
     private ActionType actionType;
+
 
     @Column(name = "max_days_allowed")
     private Integer maxDaysAllowed;

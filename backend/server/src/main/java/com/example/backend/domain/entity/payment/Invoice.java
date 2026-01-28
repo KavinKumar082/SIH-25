@@ -1,5 +1,6 @@
 package com.example.backend.domain.entity.payment;
 
+import com.example.backend.converter.payment.InvoiceStatusConverter;
 import com.example.backend.domain.enums.payment.InvoiceStatus;
 import jakarta.persistence.*;
 
@@ -30,9 +31,13 @@ public class Invoice {
     @Column(name = "due_date")
     private LocalDate dueDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Convert(converter = InvoiceStatusConverter.class)
+    @Column(
+        name = "status",
+        columnDefinition = "ENUM('Open','Paid','Partial')"
+    )
     private InvoiceStatus status;
+
 
     // ---------- Getters & Setters ----------
 

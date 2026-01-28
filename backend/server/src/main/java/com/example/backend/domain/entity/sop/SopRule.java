@@ -1,5 +1,6 @@
 package com.example.backend.domain.entity.sop;
 
+import com.example.backend.converter.sop.ActionTypeConverter;
 import com.example.backend.domain.enums.sop.ActionType;
 import jakarta.persistence.*;
 
@@ -12,9 +13,12 @@ public class SopRule {
     @Column(name = "sop_id", nullable = false, updatable = false)
     private Long sopId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "action_type")
-    private ActionType actionType;
+    @Convert(converter = ActionTypeConverter.class)
+    @Column(name = "action_type",
+columnDefinition = "ENUM('Call','Visit','Email')"
+)
+private ActionType actionType;
+
 
     @Column(name = "description", length = 255)
     private String description;

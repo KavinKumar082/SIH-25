@@ -1,4 +1,4 @@
-package com.example.backend.dto.reponse.test;
+package com.example.backend.dto.response.test;
 
 import java.math.BigDecimal;
 

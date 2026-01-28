@@ -1,5 +1,6 @@
 package com.example.backend.domain.entity.dca;
 
+import com.example.backend.converter.dca.DcaStatusConverter;
 import com.example.backend.domain.enums.dca.DcaStatus;
 import jakarta.persistence.*;
 
@@ -20,9 +21,10 @@ public class Dca {
     @Column(name = "commission_rate", precision = 5, scale = 2)
     private BigDecimal commissionRate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Convert(converter = DcaStatusConverter.class)
+    @Column(name = "status",columnDefinition = "ENUM('Active','Suspended')")
     private DcaStatus status;
+
 
     // Getters & Setters
 

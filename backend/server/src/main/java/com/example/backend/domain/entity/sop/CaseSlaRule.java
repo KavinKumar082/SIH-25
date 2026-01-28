@@ -1,5 +1,7 @@
 package com.example.backend.domain.entity.sop;
 
+import com.example.backend.converter.sop.SeverityConverter;
+import com.example.backend.converter.sop.SopCollectionStageConverter;
 import com.example.backend.domain.enums.sop.CollectionStage;
 import com.example.backend.domain.enums.sop.Severity;
 import jakarta.persistence.*;
@@ -13,16 +15,24 @@ public class CaseSlaRule {
     @Column(name = "case_sla_id", nullable = false, updatable = false)
     private Long caseSlaId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "collection_stage")
-    private CollectionStage collectionStage;
-
+    
     @Column(name = "max_resolution_days")
     private Integer maxResolutionDays;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "severity")
+    @Convert(converter = SopCollectionStageConverter.class)
+    @Column(
+        name = "collection_stage",
+        columnDefinition = "ENUM('Pre_DCA','Active','Legal')"
+    )
+    private CollectionStage collectionStage;
+
+    @Convert(converter = SeverityConverter.class)
+    @Column(
+        name = "severity",
+        columnDefinition = "ENUM('Low','Medium','High')"
+    )
     private Severity severity;
+
 
     // Getters & Setters
     public Long getCaseSlaId() { return caseSlaId; }

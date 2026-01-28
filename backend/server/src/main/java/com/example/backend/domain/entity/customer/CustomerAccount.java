@@ -1,6 +1,8 @@
 package com.example.backend.domain.entity.customer;
 
 import com.example.backend.converter.customer.AgeingBucketConverter;
+import com.example.backend.converter.customer.CustomerCollectionStageConverter;
+import com.example.backend.converter.customer.RiskSegmentConverter;
 import com.example.backend.domain.enums.customer.AgeingBucket;
 import com.example.backend.domain.enums.customer.CollectionStage;
 import com.example.backend.domain.enums.customer.RiskSegment;
@@ -35,16 +37,24 @@ public class CustomerAccount {
     private AgeingBucket ageingBucket;
 
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "risk_segment")
+    @Convert(converter = RiskSegmentConverter.class)
+    @Column(
+        name = "risk_segment",
+        columnDefinition = "ENUM('Low','Medium','High')"
+    )
     private RiskSegment riskSegment;
+
 
     @Column(name = "delinquency_score")
     private Integer delinquencyScore;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "collection_stage")
+    @Convert(converter = CustomerCollectionStageConverter.class)
+    @Column(
+        name = "collection_stage",
+        columnDefinition = "ENUM('Pre_DCA','Active','Legal')"
+    )
     private CollectionStage collectionStage;
+
 
     // ---------- Getters & Setters ----------
 

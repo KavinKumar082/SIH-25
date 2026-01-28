@@ -1,5 +1,6 @@
 package com.example.backend.domain.entity.payment;
 
+import com.example.backend.converter.payment.PaymentSourceConverter;
 import com.example.backend.domain.enums.payment.PaymentSource;
 import jakarta.persistence.*;
 
@@ -25,8 +26,11 @@ public class Payment {
     @Column(name = "payment_date")
     private LocalDate paymentDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_source")
+   @Convert(converter = PaymentSourceConverter.class)
+   @Column(
+            name = "payment_source",
+            columnDefinition = "ENUM('Customer','DCA')"
+        )
     private PaymentSource paymentSource;
 
     // ---------- Getters & Setters ----------

@@ -1,6 +1,6 @@
 package com.example.backend.controller.test;
 
-import com.example.backend.dto.reponse.test.CommissionUpdateResponse;
+import com.example.backend.dto.response.test.CommissionUpdateResponse;
 import com.example.backend.service.test.CommissionTestService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
