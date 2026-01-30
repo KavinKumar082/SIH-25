@@ -1,6 +1,6 @@
 package com.example.backend.config.sop;
 
-import jakarta.persistence.EntityManagerFactory;
+import java.util.Objects;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,27 +24,34 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 )
 public class SopDBConfig {
 
-    @Bean
+    @Bean(name = "sopDataSource")
     @ConfigurationProperties(prefix = "sop.datasource")
     public DataSource sopDataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean
+    @Bean(name = "sopEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean sopEntityManagerFactory(
-            EntityManagerFactoryBuilder builder) {
+            EntityManagerFactoryBuilder builder,
+            @Qualifier("sopDataSource") DataSource dataSource) {
 
         return builder
-                .dataSource(sopDataSource())
+                .dataSource(dataSource)
                 .packages("com.example.backend.domain.entity.sop")
                 .persistenceUnit("sopPU")
                 .build();
     }
 
-    @Bean
+    @Bean(name = "sopTransactionManager")
     public PlatformTransactionManager sopTransactionManager(
-            @Qualifier("sopEntityManagerFactory") EntityManagerFactory emf) {
+            @Qualifier("sopEntityManagerFactory")
+            LocalContainerEntityManagerFactoryBean emfBean) {
 
-        return new JpaTransactionManager(emf);
+        return new JpaTransactionManager(
+                Objects.requireNonNull(
+                        emfBean.getObject(),
+                        "SOP EntityManagerFactory must not be null"
+                )
+        );
     }
 }

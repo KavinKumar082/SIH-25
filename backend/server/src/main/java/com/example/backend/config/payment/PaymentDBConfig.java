@@ -1,6 +1,6 @@
 package com.example.backend.config.payment;
 
-import jakarta.persistence.EntityManagerFactory;
+import java.util.Objects;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,27 +24,34 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 )
 public class PaymentDBConfig {
 
-    @Bean
+    @Bean(name = "paymentDataSource")
     @ConfigurationProperties(prefix = "payment.datasource")
     public DataSource paymentDataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean
+    @Bean(name = "paymentEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean paymentEntityManagerFactory(
-            EntityManagerFactoryBuilder builder) {
+            EntityManagerFactoryBuilder builder,
+            @Qualifier("paymentDataSource") DataSource dataSource) {
 
         return builder
-                .dataSource(paymentDataSource())
+                .dataSource(dataSource)
                 .packages("com.example.backend.domain.entity.payment")
                 .persistenceUnit("paymentPU")
                 .build();
     }
 
-    @Bean
+    @Bean(name = "paymentTransactionManager")
     public PlatformTransactionManager paymentTransactionManager(
-            @Qualifier("paymentEntityManagerFactory") EntityManagerFactory emf) {
+            @Qualifier("paymentEntityManagerFactory")
+            LocalContainerEntityManagerFactoryBean emfBean) {
 
-        return new JpaTransactionManager(emf);
+        return new JpaTransactionManager(
+                Objects.requireNonNull(
+                        emfBean.getObject(),
+                        "Payment EntityManagerFactory must not be null"
+                )
+        );
     }
 }

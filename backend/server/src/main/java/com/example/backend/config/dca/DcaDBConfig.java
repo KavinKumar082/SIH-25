@@ -1,6 +1,6 @@
 package com.example.backend.config.dca;
 
-import jakarta.persistence.EntityManagerFactory;
+import java.util.Objects;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,27 +24,34 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 )
 public class DcaDBConfig {
 
-    @Bean
+    @Bean(name = "dcaDataSource")
     @ConfigurationProperties(prefix = "dca.datasource")
     public DataSource dcaDataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean
+    @Bean(name = "dcaEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean dcaEntityManagerFactory(
-            EntityManagerFactoryBuilder builder) {
+            EntityManagerFactoryBuilder builder,
+            @Qualifier("dcaDataSource") DataSource dataSource) {
 
         return builder
-                .dataSource(dcaDataSource())
+                .dataSource(dataSource)
                 .packages("com.example.backend.domain.entity.dca")
                 .persistenceUnit("dcaPU")
                 .build();
     }
 
-    @Bean
+    @Bean(name = "dcaTransactionManager")
     public PlatformTransactionManager dcaTransactionManager(
-            @Qualifier("dcaEntityManagerFactory") EntityManagerFactory emf) {
+            @Qualifier("dcaEntityManagerFactory")
+            LocalContainerEntityManagerFactoryBean emfBean) {
 
-        return new JpaTransactionManager(emf);
+        return new JpaTransactionManager(
+                Objects.requireNonNull(
+                        emfBean.getObject(),
+                        "DCA EntityManagerFactory must not be null"
+                )
+        );
     }
 }

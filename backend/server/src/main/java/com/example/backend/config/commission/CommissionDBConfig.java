@@ -1,6 +1,6 @@
 package com.example.backend.config.commission;
 
-import jakarta.persistence.EntityManagerFactory;
+import java.util.Objects;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,8 +44,14 @@ public class CommissionDBConfig {
 
     @Bean(name = "commissionTransactionManager")
     public PlatformTransactionManager commissionTransactionManager(
-            @Qualifier("commissionEntityManagerFactory") EntityManagerFactory emf) {
+            @Qualifier("commissionEntityManagerFactory")
+            LocalContainerEntityManagerFactoryBean emfBean) {
 
-        return new JpaTransactionManager(emf);
+        return new JpaTransactionManager(
+                Objects.requireNonNull(
+                        emfBean.getObject(),
+                        "Commission EntityManagerFactory must not be null"
+                )
+        );
     }
 }
