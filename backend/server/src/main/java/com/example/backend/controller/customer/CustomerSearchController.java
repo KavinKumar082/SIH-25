@@ -16,7 +16,7 @@ public class CustomerSearchController {
         this.customerSearchService = customerSearchService;
     }
 
-    @PostMapping("/search")
+    @PostMapping("/_search")
     public Page<CustomerSearchResponse> searchCustomers(
             @RequestBody SearchFilterRequest request
     ) {

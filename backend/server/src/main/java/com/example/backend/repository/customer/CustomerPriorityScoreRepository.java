@@ -18,12 +18,7 @@ public interface CustomerPriorityScoreRepository
     """)
     Optional<Integer> findLatestScoreByCustomerId(Long customerId);
 
-    // ✅ NEW method (for Priority Engine only)
-    @Query("""
-        select cps
-        from CustomerPriorityScore cps
-        where cps.customer.customerId = :customerId
-        order by cps.effectiveDate desc
-    """)
-    Optional<CustomerPriorityScore> findLatestEntityByCustomerId(Long customerId);
+    // ✅ CORRECT (LIMIT 1 is auto-applied)
+    Optional<CustomerPriorityScore>
+    findTopByCustomerCustomerIdOrderByEffectiveDateDesc(Long customerId);
 }

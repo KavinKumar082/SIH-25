@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.example.backend.repository.sop",
+        basePackages = "com.example.backend.repository.sla",
         entityManagerFactoryRef = "sopEntityManagerFactory",
         transactionManagerRef = "sopTransactionManager"
 )
@@ -37,7 +37,9 @@ public class SopDBConfig {
 
         return builder
                 .dataSource(dataSource)
-                .packages("com.example.backend.domain.entity.sop")
+                .packages(
+                        "com.example.backend.domain.entity.sla" // ✅ REQUIRED
+                )
                 .persistenceUnit("sopPU")
                 .build();
     }

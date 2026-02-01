@@ -1,6 +1,7 @@
 package com.example.backend.converter.sop;
 
-import com.example.backend.domain.enums.sop.Severity;
+import com.example.backend.domain.enums.sla.Severity;
+
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

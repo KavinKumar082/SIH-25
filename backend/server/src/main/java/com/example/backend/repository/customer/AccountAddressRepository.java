@@ -18,4 +18,8 @@ public interface AccountAddressRepository
         order by a.addressId asc
     """)
     Optional<String> findCityByCustomerId(Long customerId);
+
+    Optional<AccountAddress> findFirstByAccountAccountId(Long accountId);
+
+    
 }

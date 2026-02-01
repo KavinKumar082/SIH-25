@@ -44,7 +44,6 @@ public class PriorityEngineServiceImpl implements PriorityEngineService {
             // ===============================
             Long accountId = dcaCase.getAccountId();
             if (accountId == null) {
-                // data corruption safeguard
                 continue;
             }
 
@@ -56,10 +55,11 @@ public class PriorityEngineServiceImpl implements PriorityEngineService {
 
             CustomerPriorityScore staticPriority =
                     customerPriorityScoreRepository
-                            .findLatestEntityByCustomerId(
+                            .findTopByCustomerCustomerIdOrderByEffectiveDateDesc(
                                     account.getCustomer().getCustomerId()
                             )
                             .orElse(null);
+
             if (staticPriority == null) {
                 continue;
             }
@@ -68,25 +68,34 @@ public class PriorityEngineServiceImpl implements PriorityEngineService {
             int staticScore = staticPriority.getScore();
             int caseSlaPressure = calculateCaseSlaPressure(dcaCase, today);
             int actionPressure = calculateActionPressure(dcaCase.getCaseId());
-            int stagePressure = calculateStagePressure(
-                    account.getCollectionStage().name()
-            );
+            int stagePressure =
+                    calculateStagePressure(account.getCollectionStage().name());
 
             int finalScore =
                     staticScore + caseSlaPressure + actionPressure + stagePressure;
 
-            CasePriorityScore cps = new CasePriorityScore();
-            cps.setDcaCase(dcaCase);
-            cps.setScore(finalScore);
-            cps.setReason(buildReason(
-                    staticScore,
-                    caseSlaPressure,
-                    actionPressure,
-                    stagePressure,
-                    account.getCollectionStage().name()
-            ));
+            CasePriorityScore cps =
+                    casePriorityScoreRepository
+                            .findByCaseId(dcaCase.getCaseId())
+                            .orElseThrow(() ->
+                                    new IllegalStateException(
+                                            "CasePriorityScore missing for caseId="
+                                                    + dcaCase.getCaseId()
+                                    )
+                            );
 
-            casePriorityScoreRepository.save(cps);
+            cps.setScore(finalScore);
+            cps.setReason(
+                    buildReason(
+                            staticScore,
+                            caseSlaPressure,
+                            actionPressure,
+                            stagePressure,
+                            account.getCollectionStage().name()
+                    )
+            );
+
+            casePriorityScoreRepository.save(cps); // UPDATE ONLY
         }
     }
 

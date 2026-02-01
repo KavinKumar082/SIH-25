@@ -1,7 +1,8 @@
-package com.example.backend.domain.entity.sop;
+package com.example.backend.domain.entity.sla;
 
 import com.example.backend.converter.sop.ActionTypeConverter;
-import com.example.backend.domain.enums.sop.ActionType;
+import com.example.backend.domain.enums.sla.ActionType;
+
 import jakarta.persistence.*;
 
 @Entity

@@ -6,6 +6,7 @@
 
     import java.math.BigDecimal;
     import java.util.Optional;
+    import java.util.List;
 
     public interface CustomerAccountRepository
             extends JpaRepository<CustomerAccount, Long> {
@@ -16,4 +17,6 @@
             where acc.customer.customerId = :customerId
         """)
         Optional<BigDecimal> totalOutstandingByCustomerId(Long customerId);
+
+        List<CustomerAccount> findByCustomerCustomerId(Long customerId);
     }

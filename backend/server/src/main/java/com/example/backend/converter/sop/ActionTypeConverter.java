@@ -1,6 +1,7 @@
 package com.example.backend.converter.sop;
 
-import com.example.backend.domain.enums.sop.ActionType;
+import com.example.backend.domain.enums.sla.ActionType;
+
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

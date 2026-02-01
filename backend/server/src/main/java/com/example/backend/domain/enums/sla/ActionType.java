@@ -1,4 +1,4 @@
-package com.example.backend.domain.enums.sop;
+package com.example.backend.domain.enums.sla;
 
 public enum ActionType {
     Call,
