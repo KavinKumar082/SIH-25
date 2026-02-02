@@ -1,3 +1,4 @@
+USE dca_case_db;
 INSERT INTO DCA (dca_id, dca_name, commission_rate, status) VALUES
 (1,'Chennai Recoveries Pvt Ltd',12.50,'Active'),
 (2,'South India Collections',10.00,'Active'),

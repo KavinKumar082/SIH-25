@@ -1,3 +1,4 @@
+USE payment_db;
 INSERT INTO Invoice
 (invoice_id, account_id, invoice_amount, outstanding_amount, invoice_date, due_date, status)
 VALUES

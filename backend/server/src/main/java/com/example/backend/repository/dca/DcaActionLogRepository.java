@@ -19,4 +19,8 @@ public interface DcaActionLogRepository
     List<DcaActionLog> findBreachedActionsByCaseId(
             @Param("caseId") Long caseId
     );
+
+
+    List<DcaActionLog> findByDcaCase_CaseId(Long caseId);
+
 }

@@ -1,3 +1,4 @@
+USE customer_db;
 INSERT INTO Customer 
 (customer_id, customer_name, customer_type, phone_number, email, date_of_birth, industry, country, status)
 VALUES

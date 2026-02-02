@@ -1,3 +1,4 @@
+USE commission_analytics_db;
 INSERT INTO DCA_Commission
 (commission_id, dca_id, case_id, payment_id, recovered_amount, commission_amount)
 VALUES

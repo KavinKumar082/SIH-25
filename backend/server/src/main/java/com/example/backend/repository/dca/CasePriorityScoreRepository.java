@@ -31,4 +31,11 @@ public interface CasePriorityScoreRepository
         WHERE cps.dcaCase.caseId = :caseId
     """)
     Optional<CasePriorityScore> findByCaseId(Long caseId);
+
+
+    Optional<CasePriorityScore>
+findTopByDcaCase_CaseIdOrderByEffectiveDateDesc(Long caseId);
+
+
+
 }

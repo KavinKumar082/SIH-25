@@ -1,3 +1,4 @@
+USE sop_sla_db;
 INSERT INTO SOP_Rule (sop_id, action_type, description) VALUES
 (1,'Call','Initial reminder call to customer'),
 (2,'Call','Follow-up call after missed promise'),

@@ -20,5 +20,8 @@ public interface DcaCaseRepository extends JpaRepository<DcaCase, Long> {
 
     boolean existsByAccountId(Long accountId);
 
+    List<DcaCase> findByDca_DcaId(Long dcaId);
+
+
     Optional<DcaGeo> findFirstByDcaDcaId(Long dcaId);
 }
